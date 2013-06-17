@@ -19,7 +19,9 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
-import net.sf.json.JSONObject;
+//import net.sf.json.JSONObject;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import org.topicquests.agent.solr.AgentEnvironment;
 import org.topicquests.common.ResultPojo;
@@ -41,6 +43,8 @@ public class TupleSpaceConnector {
 	private ServerSocket srvr;
 	private Worker worker;
 	private Object synchObject = new Object();
+	private JSONParser parser;
+
 	/**
 	 * 
 	 */
@@ -48,6 +52,7 @@ public class TupleSpaceConnector {
 		environment = env;
 		this.server = server;
 		this.port = port;
+		parser = new JSONParser();
 		System.out.println("TupleSpaceConnector starting "+port);
         srvr = new ServerSocket(port);
         worker = new Worker();
@@ -112,7 +117,7 @@ public class TupleSpaceConnector {
 	 * it can return <code>null</code>, meaning it must be run inside a
 	 * threaded loop</p>
 	 * @param tag
-	 * @param agentName TODO
+	 * @param agentName
 	 * @param listener
 	 */
 	public void readTuple(String tag, String agentName, ITupleSpaceConnectorListener listener) {
@@ -138,7 +143,7 @@ public class TupleSpaceConnector {
 		m.put(ITupleFields.CARGO, cargo);
 		if (agentName != null)
 			m.put(ITupleFields.AGENT_NAME, agentName);
-		JSONObject j = JSONObject.fromObject(m);
+		JSONObject j = new JSONObject(m);
 		return j.toString();
 	}
 	
@@ -185,7 +190,7 @@ public class TupleSpaceConnector {
 //			skt.close();
 	        line = buf.toString();
 	        environment.logDebug("TupleSpaceConnector got back "+line);
-			JSONObject jobj = JSONObject.fromObject(line);
+			JSONObject jobj = (JSONObject)parser.parse(line);
 			//what we get back IS the cargo from the original tuple
 			result.setResultObject(jobj.toString());
 		} catch (Exception e) {

@@ -15,7 +15,7 @@
  */
 package org.topicquests.agent.solr;
 
-import org.semispace.Tuple;
+//import org.semispace.Tuple;
 import org.semispace.api.ISemiSpace;
 import org.semispace.api.ISemiSpaceTuple;
 import org.semispace.api.ITupleFields;
@@ -84,7 +84,7 @@ public class HarvestingBehavior implements ITupleSpaceConnectorListener {
 			//nothing found
 			synchronized(synchObject) {
 				try {
-				synchObject.wait(1000); // wait for a while
+					synchObject.wait(1000); // wait for a while
 				} catch (Exception e) {System.out.println("Oops1");}
 			}
 		} else {
