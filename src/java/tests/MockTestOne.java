@@ -46,7 +46,7 @@ public class MockTestOne {
 	
 	void runTest() throws Exception {
 		System.out.println("Test Starting");
-		ISolrDataProvider p = solrEnvironment.getDataProvider();
+		ISolrDataProvider p = (ISolrDataProvider)solrEnvironment.getDataProvider();
 		INodeModel m = p.getNodeModel();
 		//IResult newNode(String label, String description, String lang, String userId, String smallImagePath, String largeImagePath, boolean isPrivate);
 		IResult r = m.newNode("My Label", "Just a node to test", "en", "admin", null, null, false);

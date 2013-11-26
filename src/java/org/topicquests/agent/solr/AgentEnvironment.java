@@ -32,8 +32,8 @@ import org.topicquests.agent.api.IPluggableAgent;
  * <p>SolrEnviornment concludes booting by loading all listed agents</p>
  */
 public class AgentEnvironment {
-	private LoggingPlatform log = LoggingPlatform.getInstance();
-	private Hashtable<String,Object>props;
+	private LoggingPlatform log = LoggingPlatform.getInstance("logger.properties");
+	private Map<String,Object>props;
 	private TupleSpaceConnector connector;
 	private int connectorport = 0;
 	private String connectorserver = "";
@@ -53,16 +53,21 @@ public class AgentEnvironment {
 		_AgentName = (String)props.get("AgentName");
 		_AgentBehavior = (String)props.get("AgentBehavior");
 		agents = new HashMap<String,IPluggableAgent>();
+		log.logDebug("AgentEnvironment starting");
 		try {
 			String portx = (String)props.get("TuplespacePort");
 			connectorport = Integer.parseInt(portx);
 			connectorserver = (String)props.get("TuplespaceServer");
 			solrEnvironment = new SolrEnvironment(props);
+			log.logDebug("AgentEnvironment-1");
 			tuplespaceEnvironment = new TupleSpaceEnvironment(props);
+			log.logDebug("AgentEnvironment-2");
 			connector = new TupleSpaceConnector(this, connectorserver,connectorport);
+			log.logDebug("AgentEnvironment-3");
 			//now bring in the agents
 			//once they are in, they go right to work.
 			bootAgents();
+			log.logDebug("AgentEnvironment-4");
 			//this fires up the harvesting behavior
 			if (_AgentBehavior.equals(IAgentFrameworkBehavior.HARVEST_BEHAVIOR))
 				harvester = new HarvestingBehavior(this, _AgentName);
@@ -87,7 +92,7 @@ public class AgentEnvironment {
     		for (int i=0;i<len;i++) {
     			cp = ((String)((List<String>)dbs.get(i)).get(1)).trim();
     			key = ((String)((List<String>)dbs.get(i)).get(0)).trim();
-    			logDebug("SolrEnvironment.bootAgents "+key + " | "+cp);
+    			logDebug("AgentEnvironment.bootAgents "+key + " | "+cp);
 				Class o = Class.forName(cp);
 				IPluggableAgent a = (IPluggableAgent)o.newInstance();
     			a.init(this, key);
@@ -96,7 +101,7 @@ public class AgentEnvironment {
     	}		
 	}
 	
-	public Hashtable<String,Object> getProperties() {
+	public Map<String,Object> getProperties() {
 		return this.props;
 	}
 	public TupleSpaceConnector getTupleSpaceConnector() {

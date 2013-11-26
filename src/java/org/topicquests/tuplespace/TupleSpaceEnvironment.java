@@ -14,7 +14,7 @@
  * and limitations under the License.
  */
 package org.topicquests.tuplespace;
-import java.util.Hashtable;
+import java.util.Map;
 import org.semispace.api.ISemiSpace;
 import org.semispace.SemiSpace;
 import org.topicquests.util.LoggingPlatform;
@@ -24,7 +24,7 @@ import org.topicquests.util.LoggingPlatform;
  *
  */
 public class TupleSpaceEnvironment {
-	private LoggingPlatform log = LoggingPlatform.getInstance();
+	private LoggingPlatform log = LoggingPlatform.getLiveInstance();
 	private ISemiSpace tupleSpace;
 //	private Hashtable<String,Object>props;
 	private long _curtime = System.currentTimeMillis();
@@ -34,7 +34,7 @@ public class TupleSpaceEnvironment {
 	/**
 	 * @param props
 	 */
-	public TupleSpaceEnvironment(Hashtable<String,Object>props) {
+	public TupleSpaceEnvironment(Map<String,Object>props) {
 //		this.props = props;
 		factory = new TupleFactory(this);
 		String spacename = (String)props.get("SemiSpaceName");

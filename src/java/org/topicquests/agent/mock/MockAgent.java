@@ -60,7 +60,7 @@ public class MockAgent implements IPluggableAgent {
 		solrEnvironment = env.getSolrEnvironment();
 		blackboard = agentEnvironment.getTupleSpaceEnvironment().getTupleSpace();
 		factory = new TupleFactory(agentEnvironment.getTupleSpaceEnvironment());
-		log  = LoggingPlatform.getInstance();
+		log  = LoggingPlatform.getLiveInstance();
 		tracer = log.getTracer(agentName);
 		IResult result = new ResultPojo();
 		thread = new Worker();
